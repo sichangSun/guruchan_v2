@@ -25,6 +25,9 @@ go.work
 .DS_Store
 /tmp
 
+# local 
 docker-compose.env
+# stage env
+stage.env
 
 
