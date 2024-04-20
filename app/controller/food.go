@@ -10,5 +10,4 @@ type FoodController struct {
 
 // PagingQuerry to select all foodlist (max 30 in one page)
 func (FoodController *FoodController) PagingQuerryAllFood() {
-
 }
