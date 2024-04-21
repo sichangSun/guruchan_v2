@@ -16,9 +16,9 @@ type FoodRepository struct {
 	db *sqlx.DB
 }
 
-// query food(whit collection list or all food list ) typecode=1 is collection list ,
-func (f *FoodRepository) QuerryFoodList(ctx context.Context, userID string, typeCode int8, pageInt int) (*mysql.FoodSlice, error) {
-	output, err := mysql.Foods(Where("isDel = ?", 0), Limit(30), Offset(pageInt)).All(ctx, f.db)
+// query all food
+func (f *FoodRepository) QuerryFoodList(ctx context.Context, userID int, pageInt int) (*mysql.FoodSlice, error) {
+	output, err := mysql.Foods(Where("userId = ?", userID), Where("isDel = ?", 0), Limit(30), Offset(pageInt)).All(ctx, f.db)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, repository.RowsNotFoundErr
@@ -28,8 +28,13 @@ func (f *FoodRepository) QuerryFoodList(ctx context.Context, userID string, type
 	return &output, nil
 }
 
+// querry collection list (favorite)
+func (f *FoodRepository) QuerryCollectionFoodList(ctx context.Context, userID int, typeCode int8, pageInt int) (*mysql.FoodSlice, error) {
+	return nil, nil
+}
+
 // fuzzy Query food
-func (FoodRepository *FoodRepository) FuzzyQuery(ctx context.Context, userID string, foodOrRestaurantName string, tagIds []int8, pageInt int) (*mysql.FoodSlice, error) {
+func (FoodRepository *FoodRepository) FuzzyQuery(ctx context.Context, userID string, foodOrRestaurantName string, tagId int, pageInt int) (*mysql.FoodSlice, error) {
 	return nil, nil
 }
 
