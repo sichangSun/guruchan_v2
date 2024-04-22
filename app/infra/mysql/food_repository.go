@@ -41,7 +41,26 @@ func (f *FoodRepository) QuerryCollectionFoodList(ctx context.Context, userID in
 }
 
 // fuzzy Query food
-func (FoodRepository *FoodRepository) FuzzyQuery(ctx context.Context, userID string, foodOrRestaurantName string, tagId []int8, pageInt int) (*mysql.FoodSlice, error) {
+func (f *FoodRepository) FuzzyQuery(ctx context.Context, userID string, foodOrRestaurantName string, tagId []int8) (*mysql.FoodSlice, error) {
+	// name only
+	if foodOrRestaurantName != "" {
+		if tagId != nil && len(tagId) > 0 {
+			output, err := mysql.Foods(Where("userId = ?", userID),
+				Where("restaurantName like ? or foodName like ? or address like ?", `%foodOrRestaurantName%`, `%foodOrRestaurantName%`, `%foodOrRestaurantName%`),
+				Where("isDel = ?", 0),
+				LeftOuterJoin("Tag on Tag."),
+				//Todo DB syusei
+			).All(ctx, f.db)
+			if err != nil {
+				if errors.Is(err, sql.ErrNoRows) {
+					return nil, repository.RowsNotFoundErr
+				}
+				return nil, err
+			}
+			return &output, nil
+		}
+
+	}
 	return nil, nil
 }
 

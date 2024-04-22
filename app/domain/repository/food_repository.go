@@ -17,7 +17,7 @@ type FoodRepository interface {
 	//querry collection list (favorite)
 	QuerryCollectionFoodList(ctx context.Context, userID int, typeCode int8, pageInt int) (*mysql.FoodSlice, error)
 	//fuzzy Query byTag
-	FuzzyQuery(ctx context.Context, userID string, foodOrRestaurantName string, tagId []int8, pageInt int) (*mysql.FoodSlice, error)
+	FuzzyQuery(ctx context.Context, userID string, foodOrRestaurantName string, tagId []int8) (*mysql.FoodSlice, error)
 	//update food
 	UpdateFoodById(ctx context.Context, userID string, food *service.FoodInput) error
 	//add a new food
