@@ -28,7 +28,7 @@ type Food struct {
 	UserId         int         `boil:"userId" json:"userId" toml:"userId" yaml:"userId"`
 	RestaurantName string      `boil:"restaurantName" json:"restaurantName" toml:"restaurantName" yaml:"restaurantName"`
 	FoodName       null.String `boil:"foodName" json:"foodName,omitempty" toml:"foodName" yaml:"foodName,omitempty"`
-	Address        null.String `boil:"address" json:"address,omitempty" toml:"address" yaml:"address,omitempty"`
+	ResAddress     null.String `boil:"res_address" json:"res_address,omitempty" toml:"res_address" yaml:"res_address,omitempty"`
 	FullAddress    null.String `boil:"fullAddress" json:"fullAddress,omitempty" toml:"fullAddress" yaml:"fullAddress,omitempty"`
 	IsLikeflag     int         `boil:"isLikeflag" json:"isLikeflag" toml:"isLikeflag" yaml:"isLikeflag"`
 	// 0未分类
@@ -40,7 +40,8 @@ type Food struct {
 	TestedFlag int         `boil:"testedFlag" json:"testedFlag" toml:"testedFlag" yaml:"testedFlag"`
 	FoodImg    null.String `boil:"foodImg" json:"foodImg,omitempty" toml:"foodImg" yaml:"foodImg,omitempty"`
 	// 1为删除
-	IsDel int `boil:"isDel" json:"isDel" toml:"isDel" yaml:"isDel"`
+	IsDel      int         `boil:"isDel" json:"isDel" toml:"isDel" yaml:"isDel"`
+	FoodDetail null.String `boil:"foodDetail" json:"foodDetail,omitempty" toml:"foodDetail" yaml:"foodDetail,omitempty"`
 
 	R *foodR `boil:"-" json:"-" toml:"-" yaml:"-"`
 	L foodL  `boil:"-" json:"-" toml:"-" yaml:"-"`
@@ -51,7 +52,7 @@ var FoodColumns = struct {
 	UserId         string
 	RestaurantName string
 	FoodName       string
-	Address        string
+	ResAddress     string
 	FullAddress    string
 	IsLikeflag     string
 	Typecode       string
@@ -61,12 +62,13 @@ var FoodColumns = struct {
 	TestedFlag     string
 	FoodImg        string
 	IsDel          string
+	FoodDetail     string
 }{
 	FoodId:         "foodId",
 	UserId:         "userId",
 	RestaurantName: "restaurantName",
 	FoodName:       "foodName",
-	Address:        "address",
+	ResAddress:     "res_address",
 	FullAddress:    "fullAddress",
 	IsLikeflag:     "isLikeflag",
 	Typecode:       "typecode",
@@ -76,6 +78,7 @@ var FoodColumns = struct {
 	TestedFlag:     "testedFlag",
 	FoodImg:        "foodImg",
 	IsDel:          "isDel",
+	FoodDetail:     "foodDetail",
 }
 
 var FoodTableColumns = struct {
@@ -83,7 +86,7 @@ var FoodTableColumns = struct {
 	UserId         string
 	RestaurantName string
 	FoodName       string
-	Address        string
+	ResAddress     string
 	FullAddress    string
 	IsLikeflag     string
 	Typecode       string
@@ -93,12 +96,13 @@ var FoodTableColumns = struct {
 	TestedFlag     string
 	FoodImg        string
 	IsDel          string
+	FoodDetail     string
 }{
 	FoodId:         "Food.foodId",
 	UserId:         "Food.userId",
 	RestaurantName: "Food.restaurantName",
 	FoodName:       "Food.foodName",
-	Address:        "Food.address",
+	ResAddress:     "Food.res_address",
 	FullAddress:    "Food.fullAddress",
 	IsLikeflag:     "Food.isLikeflag",
 	Typecode:       "Food.typecode",
@@ -108,6 +112,7 @@ var FoodTableColumns = struct {
 	TestedFlag:     "Food.testedFlag",
 	FoodImg:        "Food.foodImg",
 	IsDel:          "Food.isDel",
+	FoodDetail:     "Food.foodDetail",
 }
 
 // Generated where
@@ -233,7 +238,7 @@ var FoodWhere = struct {
 	UserId         whereHelperint
 	RestaurantName whereHelperstring
 	FoodName       whereHelpernull_String
-	Address        whereHelpernull_String
+	ResAddress     whereHelpernull_String
 	FullAddress    whereHelpernull_String
 	IsLikeflag     whereHelperint
 	Typecode       whereHelperint
@@ -243,12 +248,13 @@ var FoodWhere = struct {
 	TestedFlag     whereHelperint
 	FoodImg        whereHelpernull_String
 	IsDel          whereHelperint
+	FoodDetail     whereHelpernull_String
 }{
 	FoodId:         whereHelperint{field: "`Food`.`foodId`"},
 	UserId:         whereHelperint{field: "`Food`.`userId`"},
 	RestaurantName: whereHelperstring{field: "`Food`.`restaurantName`"},
 	FoodName:       whereHelpernull_String{field: "`Food`.`foodName`"},
-	Address:        whereHelpernull_String{field: "`Food`.`address`"},
+	ResAddress:     whereHelpernull_String{field: "`Food`.`res_address`"},
 	FullAddress:    whereHelpernull_String{field: "`Food`.`fullAddress`"},
 	IsLikeflag:     whereHelperint{field: "`Food`.`isLikeflag`"},
 	Typecode:       whereHelperint{field: "`Food`.`typecode`"},
@@ -258,6 +264,7 @@ var FoodWhere = struct {
 	TestedFlag:     whereHelperint{field: "`Food`.`testedFlag`"},
 	FoodImg:        whereHelpernull_String{field: "`Food`.`foodImg`"},
 	IsDel:          whereHelperint{field: "`Food`.`isDel`"},
+	FoodDetail:     whereHelpernull_String{field: "`Food`.`foodDetail`"},
 }
 
 // FoodRels is where relationship names are stored.
@@ -277,8 +284,8 @@ func (*foodR) NewStruct() *foodR {
 type foodL struct{}
 
 var (
-	foodAllColumns            = []string{"foodId", "userId", "restaurantName", "foodName", "address", "fullAddress", "isLikeflag", "typecode", "f_addTime", "f_updataTime", "firstTime", "testedFlag", "foodImg", "isDel"}
-	foodColumnsWithoutDefault = []string{"userId", "restaurantName", "foodName", "address", "fullAddress", "f_addTime", "f_updataTime", "firstTime", "foodImg"}
+	foodAllColumns            = []string{"foodId", "userId", "restaurantName", "foodName", "res_address", "fullAddress", "isLikeflag", "typecode", "f_addTime", "f_updataTime", "firstTime", "testedFlag", "foodImg", "isDel", "foodDetail"}
+	foodColumnsWithoutDefault = []string{"userId", "restaurantName", "foodName", "res_address", "fullAddress", "f_addTime", "f_updataTime", "firstTime", "foodImg", "foodDetail"}
 	foodColumnsWithDefault    = []string{"foodId", "isLikeflag", "typecode", "testedFlag", "isDel"}
 	foodPrimaryKeyColumns     = []string{"foodId"}
 	foodGeneratedColumns      = []string{}

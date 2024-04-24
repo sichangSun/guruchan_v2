@@ -26,7 +26,6 @@ import (
 type Tag struct {
 	TagId       int       `boil:"tagId" json:"tagId" toml:"tagId" yaml:"tagId"`
 	UserId      int       `boil:"userId" json:"userId" toml:"userId" yaml:"userId"`
-	FoodId      int       `boil:"foodId" json:"foodId" toml:"foodId" yaml:"foodId"`
 	TagTittle   string    `boil:"tagTittle" json:"tagTittle" toml:"tagTittle" yaml:"tagTittle"`
 	Typecode    int       `boil:"typecode" json:"typecode" toml:"typecode" yaml:"typecode"`
 	TAddTime    time.Time `boil:"t_addTime" json:"t_addTime" toml:"t_addTime" yaml:"t_addTime"`
@@ -41,7 +40,6 @@ type Tag struct {
 var TagColumns = struct {
 	TagId       string
 	UserId      string
-	FoodId      string
 	TagTittle   string
 	Typecode    string
 	TAddTime    string
@@ -50,7 +48,6 @@ var TagColumns = struct {
 }{
 	TagId:       "tagId",
 	UserId:      "userId",
-	FoodId:      "foodId",
 	TagTittle:   "tagTittle",
 	Typecode:    "typecode",
 	TAddTime:    "t_addTime",
@@ -61,7 +58,6 @@ var TagColumns = struct {
 var TagTableColumns = struct {
 	TagId       string
 	UserId      string
-	FoodId      string
 	TagTittle   string
 	Typecode    string
 	TAddTime    string
@@ -70,7 +66,6 @@ var TagTableColumns = struct {
 }{
 	TagId:       "Tag.tagId",
 	UserId:      "Tag.userId",
-	FoodId:      "Tag.foodId",
 	TagTittle:   "Tag.tagTittle",
 	Typecode:    "Tag.typecode",
 	TAddTime:    "Tag.t_addTime",
@@ -104,7 +99,6 @@ func (w whereHelpertime_Time) GTE(x time.Time) qm.QueryMod {
 var TagWhere = struct {
 	TagId       whereHelperint
 	UserId      whereHelperint
-	FoodId      whereHelperint
 	TagTittle   whereHelperstring
 	Typecode    whereHelperint
 	TAddTime    whereHelpertime_Time
@@ -113,7 +107,6 @@ var TagWhere = struct {
 }{
 	TagId:       whereHelperint{field: "`Tag`.`tagId`"},
 	UserId:      whereHelperint{field: "`Tag`.`userId`"},
-	FoodId:      whereHelperint{field: "`Tag`.`foodId`"},
 	TagTittle:   whereHelperstring{field: "`Tag`.`tagTittle`"},
 	Typecode:    whereHelperint{field: "`Tag`.`typecode`"},
 	TAddTime:    whereHelpertime_Time{field: "`Tag`.`t_addTime`"},
@@ -138,8 +131,8 @@ func (*tagR) NewStruct() *tagR {
 type tagL struct{}
 
 var (
-	tagAllColumns            = []string{"tagId", "userId", "foodId", "tagTittle", "typecode", "t_addTime", "t_updataTime", "isDel"}
-	tagColumnsWithoutDefault = []string{"userId", "foodId", "tagTittle", "t_addTime", "t_updataTime"}
+	tagAllColumns            = []string{"tagId", "userId", "tagTittle", "typecode", "t_addTime", "t_updataTime", "isDel"}
+	tagColumnsWithoutDefault = []string{"userId", "tagTittle", "t_addTime", "t_updataTime"}
 	tagColumnsWithDefault    = []string{"tagId", "typecode", "isDel"}
 	tagPrimaryKeyColumns     = []string{"tagId"}
 	tagGeneratedColumns      = []string{}
