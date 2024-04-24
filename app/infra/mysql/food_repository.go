@@ -21,9 +21,21 @@ func (f *FoodRepository) QuerryFoodList(ctx context.Context, userID int, typeCod
 	var output mysql.FoodSlice
 	err := error(nil)
 	if typeCode == 0 {
-		output, err = mysql.Foods(Where("userId = ?", userID), Where("isDel = ?", 0), Limit(30), Offset(pageInt)).All(ctx, f.db)
+		output, err = mysql.Foods(
+			Select("f.restaurantName", "f.res_address", "f.isLikeflag", "f.typecode", "f.fullAddress", "f.f_addTime",
+				"f.f_updataTime", "f.testedFlag", "f.foodImg", "f.foodId", "t.tagTittle", "t.tagId"), From("Food as f"),
+			InnerJoin("FoodTags ft on ft.foodId = f.foodId"),
+			InnerJoin("Tag t on t.tagId = ft.tagId"),
+			Where("userId = ?", userID),
+			Where("isDel = ?", 0)).All(ctx, f.db)
 	} else {
-		output, err = mysql.Foods(Where("userId = ?", userID), Where("isLikeFlag = ?", 1), Where("isDel = ?", 0), Limit(30), Offset(pageInt)).All(ctx, f.db)
+		output, err = mysql.Foods(
+			Select("f.restaurantName", "f.res_address", "f.isLikeflag", "f.typecode", "f.fullAddress", "f.f_addTime",
+				"f.f_updataTime", "f.testedFlag", "f.foodImg", "f.foodId", "t.tagTittle", "t.tagId"), From("Food as f"),
+			InnerJoin("FoodTags ft on ft.foodId = f.foodId"),
+			InnerJoin("Tag t on t.tagId = ft.tagId"),
+			Where("userId = ?", userID),
+			Where("isDel = ?", 0), Where("f.isLikeflag = ?", 1)).All(ctx, f.db)
 	}
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
@@ -34,20 +46,8 @@ func (f *FoodRepository) QuerryFoodList(ctx context.Context, userID int, typeCod
 	return &output, nil
 }
 
-// // querry collection list (favorite)
-// func (f *FoodRepository) QuerryCollectionFoodList(ctx context.Context, userID int, typeCode int8, pageInt int) (*mysql.FoodSlice, error) {
-// 	output, err := mysql.Foods(Where("userId = ?", userID), Where("isLikeFlag = ?", 1), Where("isDel = ?", 0), Limit(30), Offset(pageInt)).All(ctx, f.db)
-// 	if err != nil {
-// 		if errors.Is(err, sql.ErrNoRows) {
-// 			return nil, repository.RowsNotFoundErr
-// 		}
-// 		return nil, err
-// 	}
-// 	return &output, nil
-// }
-
 // querry one food by foodID
-func (f *FoodRepository) QuerryOneFood(ctx context.Context, userID int) (*mysql.FoodSlice, error) {
+func (f *FoodRepository) QuerryOneFood(ctx context.Context, userID int, foodID int) (*mysql.FoodSlice, error) {
 	return nil, nil
 }
 
