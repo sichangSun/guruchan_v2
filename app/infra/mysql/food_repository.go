@@ -16,9 +16,15 @@ type FoodRepository struct {
 	db *sqlx.DB
 }
 
-// query all food
-func (f *FoodRepository) QuerryFoodList(ctx context.Context, userID int, pageInt int) (*mysql.FoodSlice, error) {
-	output, err := mysql.Foods(Where("userId = ?", userID), Where("isDel = ?", 0), Limit(30), Offset(pageInt)).All(ctx, f.db)
+// query all food or querry collection list (favorite)
+func (f *FoodRepository) QuerryFoodList(ctx context.Context, userID int, typeCode int8, pageInt int) (*mysql.FoodSlice, error) {
+	var output mysql.FoodSlice
+	err := error(nil)
+	if typeCode == 0 {
+		output, err = mysql.Foods(Where("userId = ?", userID), Where("isDel = ?", 0), Limit(30), Offset(pageInt)).All(ctx, f.db)
+	} else {
+		output, err = mysql.Foods(Where("userId = ?", userID), Where("isLikeFlag = ?", 1), Where("isDel = ?", 0), Limit(30), Offset(pageInt)).All(ctx, f.db)
+	}
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, repository.RowsNotFoundErr
@@ -28,16 +34,21 @@ func (f *FoodRepository) QuerryFoodList(ctx context.Context, userID int, pageInt
 	return &output, nil
 }
 
-// querry collection list (favorite)
-func (f *FoodRepository) QuerryCollectionFoodList(ctx context.Context, userID int, typeCode int8, pageInt int) (*mysql.FoodSlice, error) {
-	output, err := mysql.Foods(Where("userId = ?", userID), Where("isLikeFlag = ?", 1), Where("isDel = ?", 0), Limit(30), Offset(pageInt)).All(ctx, f.db)
-	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return nil, repository.RowsNotFoundErr
-		}
-		return nil, err
-	}
-	return &output, nil
+// // querry collection list (favorite)
+// func (f *FoodRepository) QuerryCollectionFoodList(ctx context.Context, userID int, typeCode int8, pageInt int) (*mysql.FoodSlice, error) {
+// 	output, err := mysql.Foods(Where("userId = ?", userID), Where("isLikeFlag = ?", 1), Where("isDel = ?", 0), Limit(30), Offset(pageInt)).All(ctx, f.db)
+// 	if err != nil {
+// 		if errors.Is(err, sql.ErrNoRows) {
+// 			return nil, repository.RowsNotFoundErr
+// 		}
+// 		return nil, err
+// 	}
+// 	return &output, nil
+// }
+
+// querry one food by foodID
+func (f *FoodRepository) QuerryOneFood(ctx context.Context, userID int) (*mysql.FoodSlice, error) {
+	return nil, nil
 }
 
 // fuzzy Query food
