@@ -4,11 +4,13 @@
 package mysql
 
 var TableNames = struct {
-	Food string
-	Tag  string
-	User string
+	Food     string
+	FoodTags string
+	Tag      string
+	User     string
 }{
-	Food: "Food",
-	Tag:  "Tag",
-	User: "User",
+	Food:     "Food",
+	FoodTags: "FoodTags",
+	Tag:      "Tag",
+	User:     "User",
 }

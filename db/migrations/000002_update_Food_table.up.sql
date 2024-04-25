@@ -1,0 +1,2 @@
+ALTER TABLE Food CHANGE address res_address VARCHAR(16);
+ALTER TABLE Food ADD COLUMN foodDetail VARCHAR(120);

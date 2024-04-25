@@ -1,0 +1,1 @@
+ALTER TABLE FoodTags ADD PRIMARY KEY (foodId,tagId,userId);

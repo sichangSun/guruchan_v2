@@ -12,10 +12,12 @@ var (
 )
 
 type FoodRepository interface {
-	//query food list
-	QuerryFoodList(ctx context.Context, userID string, typeCode int8, pageInt int) (*mysql.FoodSlice, error)
-	//fuzzy Query
-	FuzzyQuery(ctx context.Context, userID string, foodOrRestaurantName string, tagIds []int8, pageInt int) (*mysql.FoodSlice, error)
+	//query all food list
+	QuerryFoodList(ctx context.Context, userID int, typeCode int8) (*mysql.FoodSlice, error)
+	//querry one food by foodID
+	QuerryOneFood(ctx context.Context, userID int, foodID int) (*mysql.FoodSlice, error)
+	//fuzzy Query byTag
+	FuzzyQuery(ctx context.Context, userID string, foodOrRestaurantName string, tagId []int) (*mysql.FoodSlice, error)
 	//update food
 	UpdateFoodById(ctx context.Context, userID string, food *service.FoodInput) error
 	//add a new food
